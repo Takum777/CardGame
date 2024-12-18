@@ -72,7 +72,7 @@ function createHero(name, type) {
                 description: "Завдає 50% додаткового урону.",
                 effect: function (attacker, defender) {
                     var damage = attacker.stats.attack * 1.5 - defender.stats.defense * 0.5;
-                    defender.stats.health -= Math.max(damage, 0);
+                    applyDamage(defender, Math.max(damage, 0));
                     console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u041C\u043E\u0433\u0443\u0442\u043D\u0456\u0439 \u0443\u0434\u0430\u0440\" \u0456 \u0437\u0430\u0432\u0434\u0430\u0454 ").concat(damage.toFixed(2), " \u0448\u043A\u043E\u0434\u0438."));
                 }
             });
@@ -85,7 +85,7 @@ function createHero(name, type) {
                 description: "Магічна атака, що ігнорує захист супротивника.",
                 effect: function (attacker, defender) {
                     var damage = attacker.stats.attack;
-                    defender.stats.health -= damage;
+                    applyDamage(defender, damage);
                     console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u0412\u043E\u0433\u043D\u044F\u043D\u0438\u0439 \u0448\u0430\u0440\" \u0456 \u0437\u0430\u0432\u0434\u0430\u0454 ").concat(damage.toFixed(2), " \u043C\u0430\u0433\u0456\u0447\u043D\u043E\u0457 \u0448\u043A\u043E\u0434\u0438."));
                 }
             }, {
@@ -106,7 +106,7 @@ function createHero(name, type) {
                 effect: function (attacker, defender) {
                     for (var i = 0; i < 2; i++) {
                         var damage = attacker.stats.attack - defender.stats.defense * 0.5;
-                        defender.stats.health -= Math.max(damage, 0);
+                        applyDamage(defender, Math.max(damage, 0));
                         console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u0414\u0432\u043E\u0440\u0430\u0437\u043E\u0432\u0438\u0439 \u043F\u043E\u0441\u0442\u0440\u0456\u043B\" \u0456 \u0437\u0430\u0432\u0434\u0430\u0454 ").concat(damage.toFixed(2), " \u0448\u043A\u043E\u0434\u0438."));
                     }
                 }
@@ -141,6 +141,17 @@ function chooseSkill(hero) {
             }
         });
     });
+}
+// Функція для перевірки здоров'я
+function applyDamage(defender, damage) {
+    defender.stats.health -= damage;
+    if (defender.stats.health < 0) {
+        defender.stats.health = 0;
+    }
+    if (defender.stats.health === 0 && defender.isAlive) {
+        defender.isAlive = false;
+        console.log("".concat(defender.name, " \u0431\u0443\u0432 \u043F\u0435\u0440\u0435\u043C\u043E\u0436\u0435\u043D\u0438\u0439!"));
+    }
 }
 // Функція для перевірки переможця
 function checkWinner(team1, team2) {
@@ -225,5 +236,4 @@ var team2 = [
     createHero("Робін", HeroType.Archer),
     createHero("Гаррі", HeroType.Mage)
 ];
-// --- Запуск гри ---
 gameLoop(team1, team2);

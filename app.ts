@@ -65,7 +65,7 @@ function createHero(name: string, type: HeroType): Hero {
                     description: "Завдає 50% додаткового урону.",
                     effect: (attacker, defender) => {
                         const damage = attacker.stats.attack * 1.5 - defender.stats.defense * 0.5;
-                        defender.stats.health -= Math.max(damage, 0);
+                        applyDamage(defender, Math.max(damage, 0));
                         console.log(`${attacker.name} використовує "Могутній удар" і завдає ${damage.toFixed(2)} шкоди.`);
                     }
                 }
@@ -80,7 +80,7 @@ function createHero(name: string, type: HeroType): Hero {
                     description: "Магічна атака, що ігнорує захист супротивника.",
                     effect: (attacker, defender) => {
                         const damage = attacker.stats.attack;
-                        defender.stats.health -= damage;
+                        applyDamage(defender, damage);
                         console.log(`${attacker.name} використовує "Вогняний шар" і завдає ${damage.toFixed(2)} магічної шкоди.`);
                     }
                 },
@@ -91,7 +91,7 @@ function createHero(name: string, type: HeroType): Hero {
                         attacker.stats.health += 20;
                         console.log(`${attacker.name} використовує "Зцілення" і відновлює 20 здоров'я.`);
                     }
-                }
+                }                
             );
             break;
         case HeroType.Archer:
@@ -104,7 +104,7 @@ function createHero(name: string, type: HeroType): Hero {
                     effect: (attacker, defender) => {
                         for (let i = 0; i < 2; i++) {
                             const damage = attacker.stats.attack - defender.stats.defense * 0.5;
-                            defender.stats.health -= Math.max(damage, 0);
+                            applyDamage(defender, Math.max(damage, 0));
                             console.log(`${attacker.name} використовує "Дворазовий постріл" і завдає ${damage.toFixed(2)} шкоди.`);
                         }
                     }
@@ -142,6 +142,21 @@ function chooseSkill(hero: Hero): Promise<Skill> {
         });
     });
 }
+
+// Функція для перевірки здоров'я
+function applyDamage(defender: Hero, damage: number): void {
+    defender.stats.health -= damage;
+
+    if (defender.stats.health < 0) {
+        defender.stats.health = 0;
+    }
+
+    if (defender.stats.health === 0 && defender.isAlive) {
+        defender.isAlive = false;
+        console.log(`${defender.name} був переможений!`);
+    }
+}
+
 
 // Функція для перевірки переможця
 function checkWinner(team1: Hero[], team2: Hero[]): string | null {
