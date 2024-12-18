@@ -68,6 +68,14 @@ function createHero(name: string, type: HeroType): Hero {
                         applyDamage(defender, Math.max(damage, 0));
                         console.log(`${attacker.name} використовує "Могутній удар" і завдає ${damage.toFixed(2)} шкоди.`);
                     }
+                },
+                {
+                    name: "Захисна стійка",
+                    description: "Збільшує захист на 10 на один раунд.",
+                    effect: (attacker) => {
+                        attacker.stats.defense += 10;
+                        console.log(`${attacker.name} використовує "Захисна стійка" і збільшує захист на 10.`);
+                    }
                 }
             );
             break;
@@ -107,6 +115,14 @@ function createHero(name: string, type: HeroType): Hero {
                             applyDamage(defender, Math.max(damage, 0));
                             console.log(`${attacker.name} використовує "Дворазовий постріл" і завдає ${damage.toFixed(2)} шкоди.`);
                         }
+                    },
+                },
+                {
+                    name: "Уклонення",
+                    description: "Збільшує швидкість на 10 на один раунд.",
+                    effect: (attacker) => {
+                        attacker.stats.speed += 10;
+                        console.log(`${attacker.name} використовує "Уклонення" і збільшує свою швидкість на 10.`);
                     }
                 }
             );

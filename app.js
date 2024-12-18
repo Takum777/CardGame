@@ -75,6 +75,13 @@ function createHero(name, type) {
                     applyDamage(defender, Math.max(damage, 0));
                     console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u041C\u043E\u0433\u0443\u0442\u043D\u0456\u0439 \u0443\u0434\u0430\u0440\" \u0456 \u0437\u0430\u0432\u0434\u0430\u0454 ").concat(damage.toFixed(2), " \u0448\u043A\u043E\u0434\u0438."));
                 }
+            }, {
+                name: "Захисна стійка",
+                description: "Збільшує захист на 10 на один раунд.",
+                effect: function (attacker) {
+                    attacker.stats.defense += 10;
+                    console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u0417\u0430\u0445\u0438\u0441\u043D\u0430 \u0441\u0442\u0456\u0439\u043A\u0430\" \u0456 \u0437\u0431\u0456\u043B\u044C\u0448\u0443\u0454 \u0437\u0430\u0445\u0438\u0441\u0442 \u043D\u0430 10."));
+                }
             });
             break;
         case HeroType.Mage:
@@ -109,6 +116,13 @@ function createHero(name, type) {
                         applyDamage(defender, Math.max(damage, 0));
                         console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u0414\u0432\u043E\u0440\u0430\u0437\u043E\u0432\u0438\u0439 \u043F\u043E\u0441\u0442\u0440\u0456\u043B\" \u0456 \u0437\u0430\u0432\u0434\u0430\u0454 ").concat(damage.toFixed(2), " \u0448\u043A\u043E\u0434\u0438."));
                     }
+                },
+            }, {
+                name: "Уклонення",
+                description: "Збільшує швидкість на 10 на один раунд.",
+                effect: function (attacker) {
+                    attacker.stats.speed += 10;
+                    console.log("".concat(attacker.name, " \u0432\u0438\u043A\u043E\u0440\u0438\u0441\u0442\u043E\u0432\u0443\u0454 \"\u0423\u043A\u043B\u043E\u043D\u0435\u043D\u043D\u044F\" \u0456 \u0437\u0431\u0456\u043B\u044C\u0448\u0443\u0454 \u0441\u0432\u043E\u044E \u0448\u0432\u0438\u0434\u043A\u0456\u0441\u0442\u044C \u043D\u0430 10."));
                 }
             });
             break;
