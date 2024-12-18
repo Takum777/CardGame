@@ -35,6 +35,15 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 var readline = require("readline");
 // Enum для типів героїв
@@ -156,6 +165,10 @@ function chooseSkill(hero) {
         });
     });
 }
+// Generic функція для пошуку героя в масиві
+function findHeroByProperty(heroes, property, value) {
+    return heroes.find(function (hero) { return hero[property] === value; });
+}
 // Функція для перевірки здоров'я
 function applyDamage(defender, damage) {
     defender.stats.health -= damage;
@@ -178,6 +191,13 @@ function checkWinner(team1, team2) {
     if (!team2Alive)
         return "Команда 1 перемогла!";
     return null;
+}
+function printBattleStats(heroes) {
+    console.log("\n=== Статистика героїв ===");
+    heroes.forEach(function (hero) {
+        console.log("".concat(hero.name, " (").concat(hero.type, ") - \u0417\u0434\u043E\u0440\u043E\u0432'\u044F: ").concat(hero.stats.health.toFixed(2), ", \u0421\u0442\u0430\u0442\u0443\u0441: ").concat(hero.isAlive ? "Живий" : "Мертвий"));
+    });
+    console.log("\n");
 }
 // Введення даних
 var rl = readline.createInterface({
@@ -215,6 +235,7 @@ function gameLoop(team1, team2) {
                         return [3 /*break*/, 5];
                     }
                     _a = [enemyTeam, currentTeam], currentTeam = _a[0], enemyTeam = _a[1];
+                    printBattleStats(__spreadArray(__spreadArray([], team1, true), team2, true));
                     return [3 /*break*/, 1];
                 case 5: return [2 /*return*/];
             }
@@ -241,13 +262,16 @@ function chooseHero(team, message) {
         });
     });
 }
+// const hero = findHeroByProperty(heroes, "type", HeroType.Warrior);
 // --- Створення команд ---
 var team1 = [
     createHero("Дмитро", HeroType.Warrior),
-    createHero("Мерлін", HeroType.Mage)
+    createHero("Мерлін", HeroType.Mage),
+    createHero("Шерлок", HeroType.Archer)
 ];
 var team2 = [
     createHero("Робін", HeroType.Archer),
-    createHero("Гаррі", HeroType.Mage)
+    createHero("Гаррі", HeroType.Mage),
+    createHero("Ланцелот", HeroType.Warrior)
 ];
 gameLoop(team1, team2);

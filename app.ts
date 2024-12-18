@@ -159,6 +159,15 @@ function chooseSkill(hero: Hero): Promise<Skill> {
     });
 }
 
+// Generic функція для пошуку героя в масиві
+function findHeroByProperty<T extends keyof Hero>(
+    heroes: Hero[],
+    property: T,
+    value: Hero[T]
+): Hero | undefined {
+    return heroes.find(hero => hero[property] === value);
+}
+
 // Функція для перевірки здоров'я
 function applyDamage(defender: Hero, damage: number): void {
     defender.stats.health -= damage;
@@ -185,6 +194,15 @@ function checkWinner(team1: Hero[], team2: Hero[]): string | null {
 
     return null;
 }
+
+function printBattleStats(heroes: Hero[]): void {
+    console.log("\n=== Статистика героїв ===");
+    heroes.forEach(hero => {
+        console.log(`${hero.name} (${hero.type}) - Здоров'я: ${hero.stats.health.toFixed(2)}, Статус: ${hero.isAlive ? "Живий" : "Мертвий"}`);
+    });
+    console.log("\n");
+}
+
 
 // Введення даних
 const rl = readline.createInterface({
@@ -214,6 +232,8 @@ async function gameLoop(team1: Hero[], team2: Hero[]): Promise<void> {
         }
 
         [currentTeam, enemyTeam] = [enemyTeam, currentTeam];
+        
+        printBattleStats([...team1, ...team2]);
     }
 }
 
@@ -237,15 +257,19 @@ function chooseHero(team: Hero[], message: string): Promise<Hero> {
     });
 }
 
+// const hero = findHeroByProperty(heroes, "type", HeroType.Warrior);
+
 // --- Створення команд ---
 const team1: Hero[] = [
     createHero("Дмитро", HeroType.Warrior),
-    createHero("Мерлін", HeroType.Mage)
+    createHero("Мерлін", HeroType.Mage),
+    createHero("Шерлок", HeroType.Archer)
 ];
 
 const team2: Hero[] = [
     createHero("Робін", HeroType.Archer),
-    createHero("Гаррі", HeroType.Mage)
+    createHero("Гаррі", HeroType.Mage),
+    createHero("Ланцелот", HeroType.Warrior)
 ];
 
 gameLoop(team1, team2);
